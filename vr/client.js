@@ -4,10 +4,16 @@
 
 // Auto-generated content.
 import {VRInstance} from 'react-vr-web';
+import SixDOFRayCaster from 'react-vr-6dof-raycaster';
+import * as THREE from 'three'
 
 function init(bundle, parent, options) {
+  const scene = new THREE.Scene();
   const vr = new VRInstance(bundle, 'ADPMarketplace', parent, {
     // Add custom options here
+    allowCarmelDeepLink: true,
+    raycasters: [new SixDOFRayCaster(scene)],
+    scene: scene,
     ...options,
   });
   vr.render = function() {

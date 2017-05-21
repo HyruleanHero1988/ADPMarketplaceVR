@@ -137,12 +137,12 @@ class ADPMarketplace extends Component {
 							HR in VR
 						</Text>
 					</VrButton>
-				: <View style={{transform: [{translate: [-20, 3, -9]}], flexDirection: 'row'}}>
+				: <View style={{transform: [{translate: [-20, 3, -10]}], flexDirection: 'row'}}>
 						{this.state.contacts.map((contactArray, i) => {
 							const rotationArray = [60,30,0,-30,-60,-90];
-							const positionalArray = [-3,-1,0,-1,-2,-3];
+							const positionalZArray = [6,1,0,5,11,20];
 							return (
-								<View style={{margin:.5, transform: [{rotateY: rotationArray[i]}, {translateX: positionalArray[i] } ] }}>
+								<View style={{margin:.5, transform: [{translateZ: positionalZArray[i] }, {rotateY: rotationArray[i]} ] }}>
 									{contactArray.map((contact) => {
 										return (
 											<Card contact={contact}/>
