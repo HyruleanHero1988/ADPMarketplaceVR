@@ -12,8 +12,9 @@ function init(bundle, parent, options) {
   const vr = new VRInstance(bundle, 'ADPMarketplace', parent, {
     // Add custom options here
     allowCarmelDeepLink: true,
-    raycasters: [new SixDOFRayCaster(scene)],
-    scene: scene,
+    //uncomment below lines to enable vive controller
+    //raycasters: [new SixDOFRayCaster(scene)],
+    //scene: scene,
     ...options,
   });
   vr.render = function() {
