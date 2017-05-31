@@ -50,7 +50,6 @@ class Playground extends React.Component {
 }
 
 class Card extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -77,7 +76,7 @@ class Card extends Component {
 					marginBottom: 20,
 					width: 400
 				}}
-				onClick={() => showInnerCylinderCb(true)}
+				onClick={() => showInnerCylinderCb(true, this.props.contact)}
 				onEnter={() => this.setState({backgroundColor: 'blue'})}
 				onExit={() => this.setState({backgroundColor: '#a5c7ff'})}
 			>
@@ -110,6 +109,7 @@ class ADPMarketplace extends Component {
 			contactSlideValue: new Animated.Value(2201),
 			page: 0,
 			showInnerCylinder: false,
+			currentContact: {},
 		};
 		this.showInnerCylinder = this.showInnerCylinder.bind(this);
 	}
@@ -137,14 +137,13 @@ class ADPMarketplace extends Component {
 
 	}
 
-	showInnerCylinder(val){
-		//console.log('trying to show inner cylinder');
-		this.setState({showInnerCylinder: val});
+	showInnerCylinder(val, contact){
+		this.setState({showInnerCylinder: val, currentContact: contact});
 	}
 
 	render() {
 		//console.log('hey, Im printing out');
-		//console.log(this.state);
+		console.log(this.state.currentContact);
 		//console.log(this.state.contacts && this.state.contacts.length);
 		const welcomeText = {
 			backgroundColor: this.state.backgroundColor,
@@ -156,6 +155,15 @@ class ADPMarketplace extends Component {
 			width: 600,
 			textAlign: 'center',
 			textAlignVertical: 'center'
+		};
+
+		const detailsText = {
+			color: '#000000',
+			fontSize: 40,
+			fontWeight: '200',
+			marginLeft: 50,
+			marginRight: 50,
+			textAlign: 'center',
 		};
 
 		return (
@@ -217,7 +225,7 @@ class ADPMarketplace extends Component {
 				</CylindricalPanel>
 
 				{this.state.showInnerCylinder === true &&
-					<CylindricalPanel layer={{width: 2200, height: 1000, density: 4680, radius: 3}} style={{position: 'absolute'}}>
+					<CylindricalPanel layer={{width: 2200, height: 1000, density: 4680, radius: 4}} style={{position: 'absolute'}}>
 						<View
 							style={{
 								width: 2200,
@@ -235,33 +243,55 @@ class ADPMarketplace extends Component {
 									justifyContent: 'center',
 								}}
 								>
-									<Text
-										style={welcomeText}>
-										Placeholder for further
+								<VrButton style={{
+									backgroundColor: 'red',
+									width: 50,
+									height: 50,
+									position: 'absolute',
+									top: 10,
+									right: 10,
+									alignItems: 'center',
+									justifyContent: 'center',
+								}} onClick={()=> this.showInnerCylinder(false)}>
+									<Text style={{
+										color: 'white',
+										fontSize: 50,
+										fontWeight: '400',
+										textAlign: 'center',
+										textAlignVertical: 'center'
+									}}>
+										X
 									</Text>
-									<Text
-										style={welcomeText}
-									>
-										Employee details
-									</Text>
-									<VrButton style={{
-										backgroundColor: 'red',
-										width: 50,
-										height: 50,
-										alignItems: 'center',
-										justifyContent: 'center',
-									}} onClick={()=> this.showInnerCylinder(false)}>
-										<Text style={{
-											color: 'white',
-											fontSize: 50,
-											fontWeight: '400',
-											textAlign: 'center',
-											textAlignVertical: 'center'
-										}}>
-											X
-										</Text>
-									</VrButton>
-								</View>
+								</VrButton>
+								<Image source={require('./static_assets/person.png')}
+									style={{width: 100, height: 100}} />
+								<Text	style={[detailsText, {fontSize: 70, fontWeight: '400'}]}>
+									{`${this.state.currentContact.givenName} ${this.state.currentContact.middleName ? this.state.currentContact.middleName + ' ' : ''}${this.state.currentContact.familyName}`}
+								</Text>
+								<Text	style={detailsText}>
+									Job Title: Chief Operating Officer
+								</Text>
+								<Text	style={detailsText}>
+									Department: Corporate
+								</Text>
+								<Text	style={detailsText}>
+									Reports to: David Abbott
+								</Text>
+								<Text	style={detailsText}>
+									Work Location: 5800 Winward Parkway, Alpharetta GA, 30005, USA
+								</Text>
+								<Text	style={detailsText}>
+									Email: {this.state.currentContact.email[0].uri}
+								</Text>
+								<Text	style={detailsText}>
+									Work Phone: {this.state.currentContact.phone[0].formattedDialNumber}
+								</Text>
+								<Text
+									style={detailsText}
+								>
+									Fax: {this.state.currentContact.phone[0].formattedDialNumber}
+								</Text>
+							</View>
 						</View>
 					</CylindricalPanel>
 				}
