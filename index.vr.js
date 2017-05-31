@@ -60,6 +60,7 @@ class Card extends Component {
 
 	render() {
 		const contact = this.props.contact;
+		const {showInnerCylinderCb} = this.props;
 
 		const defaultText = {
 			color: '#000000',
@@ -70,13 +71,13 @@ class Card extends Component {
 			textAlignVertical: 'center'
 		};
 		return (
-			<View style={{
-
+			<VrButton style={{
 					backgroundColor: this.state.backgroundColor,
 					paddingLeft: 20,
 					marginBottom: 20,
 					width: 400
 				}}
+				onClick={() => showInnerCylinderCb(true)}
 				onEnter={() => this.setState({backgroundColor: 'blue'})}
 				onExit={() => this.setState({backgroundColor: '#a5c7ff'})}
 			>
@@ -95,7 +96,7 @@ class Card extends Component {
 						Phone: {contact.phone[0].formattedDialNumber}
 					</Text>
 				</View>
-			</View>
+			</VrButton>
 		);
 	}
 }
@@ -107,8 +108,10 @@ class ADPMarketplace extends Component {
 			backgroundColor: '#ffffff',
 			welcome: true,
 			contactSlideValue: new Animated.Value(2201),
-			page: 0
+			page: 0,
+			showInnerCylinder: false,
 		};
+		this.showInnerCylinder = this.showInnerCylinder.bind(this);
 	}
 
 	componentDidMount(){
@@ -134,9 +137,14 @@ class ADPMarketplace extends Component {
 
 	}
 
+	showInnerCylinder(val){
+		//console.log('trying to show inner cylinder');
+		this.setState({showInnerCylinder: val});
+	}
+
 	render() {
-		console.log('hey, Im printing out');
-		console.log(this.state);
+		//console.log('hey, Im printing out');
+		//console.log(this.state);
 		//console.log(this.state.contacts && this.state.contacts.length);
 		const welcomeText = {
 			backgroundColor: this.state.backgroundColor,
@@ -153,7 +161,6 @@ class ADPMarketplace extends Component {
 		return (
 			<View>
 				<Pano source={asset('wall.jpg')}/>
-
 				<CylindricalPanel layer={{width: 2200, height: 1000, density: 4680, radius: 5}} style={{position: 'absolute'}}>
 					<View
 						style={{
@@ -168,10 +175,7 @@ class ADPMarketplace extends Component {
 						{this.state.welcome === true &&
 						<VrButton onEnter={() => this.setState({backgroundColor: '#0000ff'})} onExit={() => this.setState({backgroundColor: '#ffffff'})}
 							onClick={() => {
-								console.log('welcome component got clicked');
 								this.setState({welcome: false, backgroundColor: '#ffffff'});
-								//this.state.contactSlideValue.setValue(100);
-								console.log(this.state.contactSlideValue.Value);
 								Animated.timing(
 									this.state.contactSlideValue,
 									{
@@ -179,10 +183,7 @@ class ADPMarketplace extends Component {
 										duration: 1000,
 										easing: Easing.ease
 									}
-								).start();
-
-							}
-
+								).start();}
 							}>
 								<Text
 									style={welcomeText}>
@@ -204,7 +205,7 @@ class ADPMarketplace extends Component {
 										 <View style={{margin:20}}>
 											 {contactArray.map((contact) => {
 												 return (
-													 <Card contact={contact}/>
+													 <Card showInnerCylinderCb={this.showInnerCylinder} contact={contact}/>
 												 );
 											 })}
 										 </View>
@@ -214,6 +215,56 @@ class ADPMarketplace extends Component {
 						}
 					</View>
 				</CylindricalPanel>
+
+				{this.state.showInnerCylinder === true &&
+					<CylindricalPanel layer={{width: 2200, height: 1000, density: 4680, radius: 3}} style={{position: 'absolute'}}>
+						<View
+							style={{
+								width: 2200,
+								height: 1000,
+								alignItems: 'center',
+								justifyContent: 'center',
+							}}
+						>
+							<View
+								style={{
+									backgroundColor: 'white',
+									width: 1000,
+									height: 700,
+									alignItems: 'center',
+									justifyContent: 'center',
+								}}
+								>
+									<Text
+										style={welcomeText}>
+										Placeholder for further
+									</Text>
+									<Text
+										style={welcomeText}
+									>
+										Employee details
+									</Text>
+									<VrButton style={{
+										backgroundColor: 'red',
+										width: 50,
+										height: 50,
+										alignItems: 'center',
+										justifyContent: 'center',
+									}} onClick={()=> this.showInnerCylinder(false)}>
+										<Text style={{
+											color: 'white',
+											fontSize: 50,
+											fontWeight: '400',
+											textAlign: 'center',
+											textAlignVertical: 'center'
+										}}>
+											X
+										</Text>
+									</VrButton>
+								</View>
+						</View>
+					</CylindricalPanel>
+				}
 			</View>
 		);
 	}
